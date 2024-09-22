@@ -9,6 +9,7 @@ start_time = time.time()
 options = webdriver.ChromeOptions()
 options.add_argument("-disable-search-engine-choice-screen")
 
+#Login
 driver = webdriver.Chrome(options=options)  # or use any other driver
 driver.get("https://www.pepper.pl/")
 WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//*[text()=" Akceptuj wszystkie "]'))).click()
@@ -23,17 +24,15 @@ password_input.send_keys("tajnehaslo123")
 driver.find_element(By.XPATH, "//span[text()=' Zaloguj Się ']").click()
 WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//img[@alt="Awatar użytkownika tescicki123"]')))
 
-# Navigate to alerts
-driver.find_element(By.XPATH, '//img[@alt="Awatar użytkownika tescicki123"]').click()
-driver.find_element(By.XPATH, '//a[text()=" Lista alertów "]').click()
-driver.find_element(By.XPATH, '//span[text()="Zarządzaj alertami"]').click()
-alert_input = driver.find_element(By.XPATH, "//input[@placeholder='Twój alert...']")
-alert_input.click()
-alert_input.send_keys("telefony")
-WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, '//ol/li/div/span[text()=" Telefony "]')))
-driver.find_element(By.XPATH, '//ol/li/div/span[text()=" Telefony "]').click()
-driver.find_element(By.XPATH, "//span[contains(text(), 'Utwórz nowy alert')]").click()
-WebDriverWait(driver, 10).until(EC.visibility_of_element_located((By.XPATH, "//span[contains(text(), 'telefony')]")))
-
+#comment
+driver.find_element(By.XPATH, '(//a[@data-t="threadLink"])[1]').click()
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//div[@placeholder="O czym teraz myślisz..."]')))
+driver.find_element(By.XPATH, '//div[@placeholder="O czym teraz myślisz..."]').click()
+WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//div[@contenteditable="true"]')))
+comment_input = driver.find_element(By.XPATH, '//div[@contenteditable="true"]')
+comment_input.send_keys("Fajna okazja")
+driver.find_element(By.XPATH, '//span[text()="Skomentuj"]').click()
+WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH, '//div[@class="comment-body"]/div/div[text()="Fajna okazja"]')))
 driver.quit()
+
 print("--- %s seconds ---" % (time.time() - start_time))
